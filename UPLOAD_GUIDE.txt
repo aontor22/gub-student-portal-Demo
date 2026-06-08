@@ -1,0 +1,30 @@
+GITHUB UPLOAD GUIDE
+
+This is the clean GitHub-ready version.
+
+IMPORTANT:
+1) Do not upload node_modules.
+2) Do not upload package-lock.json from any old folder.
+3) Do not upload the same files twice.
+4) Best method: delete old repository files first, then upload all files/folders from this folder.
+
+Required root items:
+- .gitignore
+- .node-version
+- .npmrc
+- README.md
+- package.json
+- client/
+- server/
+
+Render backend settings:
+Root Directory: server
+Build Command: npm install --omit=dev
+Start Command: npm start
+Environment variable: NODE_VERSION=20.19.0
+
+Vercel frontend settings:
+Root Directory: client
+Build Command: npm run build
+Output Directory: dist
+Environment variable: VITE_API_BASE_URL=https://gub-student-portal-demo.onrender.com/api
