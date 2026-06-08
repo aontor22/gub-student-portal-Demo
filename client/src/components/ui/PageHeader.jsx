@@ -1,8 +1,8 @@
-export default function PageHeader({ title, subtitle, actions }) {
+export default function PageHeader({ title, subtitle, actions, eyebrow = "Student Portal" }) {
   return (
     <div className="page-header">
       <div>
-        <p className="eyebrow">Student Portal</p>
+        {eyebrow && <p className="eyebrow">{eyebrow}</p>}
         <h1>{title}</h1>
         {subtitle && <p>{subtitle}</p>}
       </div>

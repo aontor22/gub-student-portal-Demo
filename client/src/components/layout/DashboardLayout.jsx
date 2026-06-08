@@ -7,11 +7,13 @@ export default function DashboardLayout({ children }) {
 
   return (
     <div className="app-shell">
-      <Sidebar open={open} onClose={() => setOpen(false)} />
-      <main className="main-panel">
-        <Topbar onMenu={() => setOpen(true)} />
-        <section className="content-area">{children}</section>
-      </main>
+      <Topbar onMenu={() => setOpen(true)} />
+      <div className="portal-body">
+        <Sidebar open={open} onClose={() => setOpen(false)} />
+        <main className="main-panel">
+          <section className="content-area">{children}</section>
+        </main>
+      </div>
     </div>
   );
 }

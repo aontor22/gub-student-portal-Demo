@@ -1,48 +1,41 @@
 import PageHeader from "../components/ui/PageHeader";
-import Loading from "../components/ui/Loading";
-import StatusBadge from "../components/ui/StatusBadge";
 import { studentApi } from "../api/studentApi";
 import { useApi } from "../hooks/useApi";
+import { InfoList, PageState, PortalCard, StudentIdentity } from "./_shared";
 
 export default function Profile() {
   const { data, loading, error } = useApi(studentApi.profile, []);
-
-  if (loading) return <Loading />;
-  if (error) return <div className="error-box">{error}</div>;
+  const state = <PageState loading={loading} error={error} />;
+  if (loading || error) return state;
 
   return (
     <>
-      <PageHeader title="Student Profile" subtitle="Verified academic identity and program details." />
-      <section className="profile-card">
-        <div className="profile-banner" />
-        <div className="profile-main">
-          <div className="avatar-xl">{data.name.slice(0, 1)}</div>
-          <div>
-            <h2>{data.name}</h2>
-            <p>{data.program}</p>
-            <StatusBadge value={data.status} />
-          </div>
-        </div>
-        <div className="info-grid">
-          {Object.entries({
-            "Student ID": data.studentId,
-            "Email": data.email,
-            "Phone": data.phone,
-            "Department": data.department,
-            "Batch": data.batch,
-            "Campus": data.campus,
-            "Advisor": data.advisor,
-            "Blood Group": data.bloodGroup,
-            "Admission": data.admissionSemester,
-            "Completed Credits": data.completedCredits
-          }).map(([label, value]) => (
-            <div key={label} className="info-item">
-              <span>{label}</span>
-              <strong>{value}</strong>
-            </div>
-          ))}
-        </div>
-      </section>
+      <PageHeader title="Student Profile" subtitle="Academic status, basic information and contact details." />
+      <StudentIdentity student={data} />
+      <PortalCard title="Status">
+        <InfoList items={[
+          { label: "Evaluation Pending", value: `${data.evaluationPending} Courses` },
+          { label: "Active Status", value: data.status },
+          { label: "Admission Cancel", value: data.admissionCancel },
+          { label: "Disciplinary Block", value: data.disciplinaryBlock }
+        ]} />
+      </PortalCard>
+      <PortalCard title="Basic Information">
+        <InfoList items={[
+          { label: "Email", value: data.email },
+          { label: "Phone Number", value: data.phone },
+          { label: "DOB", value: data.dob },
+          { label: "Religion", value: data.religion },
+          { label: "Blood Group", value: data.bloodGroup },
+          { label: "Gender", value: data.gender },
+          { label: "Father Name", value: data.fatherName },
+          { label: "Mother Name", value: data.motherName },
+          { label: "Marital Status", value: data.maritalStatus },
+          { label: "Nationality", value: data.nationality },
+          { label: "Permanent Address", value: data.permanentAddress },
+          { label: "Present Address", value: data.presentAddress }
+        ]} />
+      </PortalCard>
     </>
   );
 }

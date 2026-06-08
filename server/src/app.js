@@ -69,7 +69,7 @@ app.get("/api/health", (_req, res) => {
 app.get("/api/debug/routes", (_req, res) => {
   res.json({
     ok: true,
-    version: "cors-routes-fixed-2026-06-08",
+    version: "modern-edu-ui-routes-2026-06-08",
     routes: [
       "GET /api/health",
       "POST /api/auth/login",
@@ -86,7 +86,14 @@ app.get("/api/debug/routes", (_req, res) => {
       "GET /api/student/transport-routes",
       "GET /api/student/notices",
       "GET /api/student/settings",
-      "PUT /api/student/settings"
+      "PUT /api/student/settings",
+      "GET /api/student/course-evaluation",
+      "GET /api/student/registration-confirmation",
+      "GET /api/student/course-drop",
+      "GET /api/student/semester-drop",
+      "GET /api/student/program-change",
+      "GET /api/student/documents",
+      "GET /api/student/teams-info"
     ]
   });
 });

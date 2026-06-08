@@ -1,36 +1,44 @@
 import PageHeader from "../components/ui/PageHeader";
-import Loading from "../components/ui/Loading";
 import DataTable from "../components/ui/DataTable";
-import MiniChart from "../components/ui/MiniChart";
 import { studentApi } from "../api/studentApi";
 import { useApi } from "../hooks/useApi";
+import { PageState, PortalCard } from "./_shared";
 
 export default function Results() {
   const { data, loading, error } = useApi(studentApi.results, []);
+  const state = <PageState loading={loading} error={error} />;
+  if (loading || error) return state;
 
-  if (loading) return <Loading />;
-  if (error) return <div className="error-box">{error}</div>;
-
-  const columns = [
-    { key: "semester", label: "Semester" },
+  const termColumns = [
+    { key: "sl", label: "SL" },
+    { key: "trimester", label: "Trimester" },
+    { key: "probationCredit", label: "Credit(Probation)" },
+    { key: "probationGpa", label: "Term GPA(Probation)" },
+    { key: "probationCgpa", label: "CGPA(Probation)" },
+    { key: "transcriptCredit", label: "Credit(Transcript)" },
+    { key: "transcriptGpa", label: "GPA(Transcript)" },
+    { key: "transcriptCgpa", label: "CGPA(Transcript)" }
+  ];
+  const courseColumns = [
+    { key: "semester", label: "Semester/Trimester" },
+    { key: "code", label: "Course Code" },
+    { key: "title", label: "Course Title" },
     { key: "credit", label: "Credit" },
-    { key: "gpa", label: "GPA" },
-    { key: "cgpa", label: "CGPA" },
-    { key: "remarks", label: "Remarks" }
+    { key: "grade", label: "Grade" },
+    { key: "point", label: "Point" },
+    { key: "status", label: "Course Status" }
   ];
 
   return (
     <>
-      <PageHeader title="Result History" subtitle="Semester-wise GPA and CGPA progression." />
-      <div className="dashboard-grid">
-        <section className="panel large-panel">
-          <DataTable columns={columns} rows={data.semesters} />
-        </section>
-        <section className="panel">
-          <div className="panel-title"><h2>GPA Trend</h2></div>
-          <MiniChart items={data.semesters.map((row) => ({ label: row.semester, value: row.gpa }))} />
-        </section>
-      </div>
+      <PageHeader title="Result History" subtitle="Trimester wise GPA and CGPA with complete course details." />
+      <PortalCard title="Trimester wise GPA and CGPA">
+        <DataTable columns={termColumns} rows={data.semesters} />
+      </PortalCard>
+      <div className="search-line"><button>Search</button><input placeholder="Search here..." /></div>
+      <PortalCard>
+        <DataTable columns={courseColumns} rows={data.courses} />
+      </PortalCard>
     </>
   );
 }

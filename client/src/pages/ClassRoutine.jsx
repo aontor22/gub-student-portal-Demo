@@ -1,29 +1,26 @@
 import PageHeader from "../components/ui/PageHeader";
-import Loading from "../components/ui/Loading";
 import DataTable from "../components/ui/DataTable";
-import StatusBadge from "../components/ui/StatusBadge";
 import { studentApi } from "../api/studentApi";
 import { useApi } from "../hooks/useApi";
+import { PageState, PortalCard, StudentIdentity } from "./_shared";
 
 export default function ClassRoutine() {
   const { data, loading, error } = useApi(studentApi.classRoutine, []);
-
-  if (loading) return <Loading />;
-  if (error) return <div className="error-box">{error}</div>;
-
+  const state = <PageState loading={loading} error={error} />;
+  if (loading || error) return state;
   const columns = [
+    { key: "formalCode", label: "Formal Code" },
+    { key: "courseTitle", label: "Course Title" },
+    { key: "section", label: "Section" },
     { key: "day", label: "Day" },
-    { key: "time", label: "Time" },
-    { key: "course", label: "Course" },
-    { key: "faculty", label: "Faculty" },
     { key: "room", label: "Room" },
-    { key: "type", label: "Type", render: (row) => <StatusBadge value={row.type} /> }
+    { key: "timeSlot", label: "Time Slot" }
   ];
-
   return (
     <>
-      <PageHeader title="Class Routine" subtitle="Weekly class schedule with room and faculty details." />
-      <section className="panel"><DataTable columns={columns} rows={data.routine} /></section>
+      <PageHeader title="Student Class Routine" subtitle="Current semester class schedule." />
+      <StudentIdentity student={data.student} />
+      <PortalCard title="Class Routine"><DataTable columns={columns} rows={data.routine} emptyText="No class routine found" /></PortalCard>
     </>
   );
 }

@@ -18,5 +18,12 @@ export const studentApi = {
   transportRoutes: () => http.get("/student/transport-routes"),
   notices: () => http.get("/student/notices"),
   settings: () => http.get("/student/settings"),
-  updateSettings: (payload) => http.put("/student/settings", payload)
+  updateSettings: (payload) => http.put("/student/settings", payload),
+  courseEvaluation: () => http.get("/student/course-evaluation"),
+  registrationConfirmation: () => http.get("/student/registration-confirmation"),
+  courseDrop: () => http.get("/student/course-drop"),
+  semesterDrop: () => http.get("/student/semester-drop"),
+  programChange: () => http.get("/student/program-change"),
+  documents: () => http.get("/student/documents"),
+  teamsInfo: () => http.get("/student/teams-info")
 };

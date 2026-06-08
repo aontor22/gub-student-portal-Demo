@@ -1,8 +1,8 @@
 # Iron Student Portal
 
-A complete industry-style student portal inspired by a modern university student dashboard. It includes a React + Vite frontend, Express backend, secure demo authentication, protected routes, profile, result history, course history, class routine, billing, transport, pre-advising, notices, and settings.
+A complete React + Express student portal with a modern education UI inspired by the provided legacy GUB portal screenshots. It keeps the familiar academic flow while upgrading the interface with responsive cards, clean tables, protected routes, and API-ready backend structure.
 
-> Important: This project does **not** include or store real Green University cookies, credentials, or private tokens. It ships with a safe mock backend and an adapter layer where an officially authorized university API can be connected later.
+> This project does **not** include real Green University cookies, browser session data, private tokens, or scraped student credentials. It ships with safe demo/mock data and can later be connected to an officially authorized university API.
 
 ## Tech Stack
 
@@ -10,9 +10,9 @@ A complete industry-style student portal inspired by a modern university student
 - React Router protected routes
 - Axios API client with credentials enabled
 - Express REST API backend
-- HttpOnly cookie authentication using JWT
+- HttpOnly JWT cookie authentication
 - Helmet, CORS, rate limit, cookie parser
-- Responsive dashboard UI with CSS only
+- Responsive CSS-only modern edu UI
 
 ## Demo Credentials
 
@@ -68,30 +68,27 @@ npm install
 npm run dev
 ```
 
-## Project Structure
-
-```txt
-iron-student-portal/
-  client/                 React + Vite frontend
-  server/                 Express backend API
-  README.md
-  package.json
-```
-
-## Included Pages
+## Included Portal Pages
 
 - Login
-- Dashboard
-- Student Profile
-- Course History
+- Home dashboard
 - Result History
+- Bill History
+- Course Evaluation
+- Student Transport Service
+- Pre-Registration
+- Registration Confirmation
+- Student Profile
 - Class Routine
-- Exam Routine
-- Billing
-- Pre Advising
-- Transport Routes
-- Notices
-- Settings
+- Password Change
+- Course Drop
+- Semester Drop
+- Student Program Change
+- Student Admit Card
+- Student Special Exam Apply
+- Student Exam Routine
+- Teams User ID Password
+- Notice Board and Settings routes are still included for extensibility
 
 ## Backend API Routes
 
@@ -101,49 +98,71 @@ GET    /api/auth/me
 POST   /api/auth/logout
 GET    /api/student/summary
 GET    /api/student/profile
-GET    /api/student/course-history
 GET    /api/student/results
+GET    /api/student/course-history
+GET    /api/student/billing
+GET    /api/student/course-evaluation
+GET    /api/student/transport-routes
+GET    /api/student/pre-advising
+GET    /api/student/registration-confirmation
 GET    /api/student/class-routine
 GET    /api/student/exam-routine
-GET    /api/student/billing
-GET    /api/student/pre-advising
-GET    /api/student/transport-routes
+GET    /api/student/course-drop
+GET    /api/student/semester-drop
+GET    /api/student/program-change
+GET    /api/student/documents
+GET    /api/student/teams-info
 GET    /api/student/notices
 GET    /api/student/settings
 PUT    /api/student/settings
 ```
 
-## Authorized API Integration Notes
+## Deployment Notes
 
-Your captured portal endpoints looked like these:
+Frontend on Vercel:
 
 ```txt
-/api/StudentInfo
-/api/ClassRoutine
-/api/StudentTransport/Routes
-/api/PreAdvising/GetStudentPreAdvisingStatus
-/api/PreAdvising/GetAutoOpenAssignCourse
-/api/PreAdvising/GetStudentInstallmentBillingInfo?studentId={studentId}
+Root Directory: client
+Build Command: npm run build
+Output Directory: dist
+Environment: VITE_API_BASE_URL=https://your-backend.onrender.com/api
 ```
 
-Do not paste browser session cookies into this project. If the university gives you an official API key, OAuth client, service account, or server-to-server token, connect it in `server/src/services/authorizedPortal.service.js`.
+Backend on Render:
+
+```txt
+Root Directory: server
+Build Command: npm install
+Start Command: npm start
+```
+
+Required backend environment variables:
+
+```env
+NODE_ENV=production
+JWT_SECRET=your_strong_random_secret
+COOKIE_NAME=iron_portal_session
+CLIENT_ORIGIN=https://your-vercel-app.vercel.app
+CLIENT_ORIGINS=https://your-vercel-app.vercel.app
+EXTERNAL_PORTAL_ENABLED=false
+```
+
+Health check:
+
+```txt
+https://your-backend.onrender.com/api/health
+```
+
+Debug routes:
+
+```txt
+https://your-backend.onrender.com/api/debug/routes
+```
 
 ## Security Notes
 
-- No private cookies are stored in source code.
-- Student ID is validated server-side.
-- Frontend cannot choose another student's ID.
-- Auth token is stored as an HttpOnly cookie.
-- CORS is restricted to the configured frontend origin.
-
-## Build
-
-```bash
-npm run build
-```
-
-The frontend production build will be created inside:
-
-```txt
-client/dist
-```
+- No real portal cookies or access tokens are included.
+- Auth token is stored in an HttpOnly cookie.
+- Cross-site production cookie settings are configured for Vercel + Render.
+- Student data is served from a controlled mock backend.
+- Student ID access is validated on the server side.

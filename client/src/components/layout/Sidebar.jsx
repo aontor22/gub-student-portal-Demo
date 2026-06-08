@@ -5,15 +5,7 @@ export default function Sidebar({ open, onClose }) {
   return (
     <>
       <aside className={`sidebar ${open ? "sidebar-open" : ""}`}>
-        <div className="brand">
-          <div className="brand-mark">IP</div>
-          <div>
-            <strong>Iron Portal</strong>
-            <span>Student cockpit</span>
-          </div>
-        </div>
-
-        <nav>
+        <nav aria-label="Student portal sections">
           {navigation.map((item) => (
             <NavLink
               key={item.path}
@@ -27,12 +19,6 @@ export default function Sidebar({ open, onClose }) {
             </NavLink>
           ))}
         </nav>
-
-        <div className="sidebar-card">
-          <p>Current Semester</p>
-          <strong>Spring 2026</strong>
-          <span>Academic services active</span>
-        </div>
       </aside>
       {open && <button className="overlay" type="button" aria-label="Close menu" onClick={onClose} />}
     </>
