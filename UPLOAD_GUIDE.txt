@@ -1,0 +1,45 @@
+IMPORTANT CLEAN UPLOAD GUIDE
+
+This ZIP contains the full React frontend and Express backend source code.
+
+Before uploading to the existing GitHub repository, delete old files first from GitHub:
+- package-lock.json
+- node_modules
+- dist
+- any old root package.json from previous versions
+- old duplicated files if GitHub upload queue created duplicates
+
+Best method:
+1. Create a new empty GitHub repository, OR delete all files in the existing repo first.
+2. Extract this ZIP.
+3. Upload only these items:
+   - client
+   - server
+   - .gitignore
+   - .npmrc
+   - .node-version
+   - .nvmrc
+   - README.md
+   - UPLOAD_GUIDE.txt
+
+Vercel Frontend:
+Root Directory: client
+Install Command: npm install --no-package-lock
+Build Command: npm run build
+Output Directory: dist
+Environment: VITE_API_BASE_URL=https://gub-student-portal-demo.onrender.com/api
+
+Render Backend:
+Root Directory: server
+Build Command: npm install --no-package-lock --omit=dev
+Start Command: npm start
+Environment:
+NODE_ENV=production
+NODE_VERSION=20.19.0
+JWT_SECRET=your_secret
+COOKIE_NAME=iron_portal_session
+CLIENT_ORIGIN=https://gub-student-portal-demo-client.vercel.app
+CLIENT_ORIGINS=https://gub-student-portal-demo-client.vercel.app
+EXTERNAL_PORTAL_ENABLED=false
+
+Do not upload package-lock.json. It can keep old internal registry URLs and break deployment.
