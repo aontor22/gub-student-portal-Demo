@@ -18,7 +18,7 @@ function setAuthCookie(res, user) {
   res.cookie(env.COOKIE_NAME, token, {
     httpOnly: true,
     secure: env.NODE_ENV === "production",
-    sameSite: "lax",
+    sameSite: env.NODE_ENV === "production" ? "none" : "lax",
     maxAge: 8 * 60 * 60 * 1000
   });
 }
@@ -56,7 +56,7 @@ export function logout(_req, res) {
   res.clearCookie(env.COOKIE_NAME, {
     httpOnly: true,
     secure: env.NODE_ENV === "production",
-    sameSite: "lax"
+    sameSite: env.NODE_ENV === "production" ? "none" : "lax"
   });
   res.json({ ok: true, message: "Logged out" });
 }

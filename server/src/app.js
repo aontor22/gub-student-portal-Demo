@@ -13,12 +13,20 @@ import { errorHandler } from "./middleware/errorHandler.js";
 const app = express();
 
 app.use(helmet());
-app.use(
-  cors({
-    origin: env.CLIENT_ORIGIN,
-    credentials: true
-  })
-);
+const corsOptions = {
+  origin(origin, callback) {
+    if (!origin || env.CLIENT_ORIGINS.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error(`CORS blocked for origin: ${origin}`));
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"]
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 app.use(express.json({ limit: "1mb" }));
 app.use(cookieParser());
 app.use(morgan(env.NODE_ENV === "production" ? "combined" : "dev"));
@@ -31,8 +39,12 @@ app.use(
   })
 );
 
+app.get("/", (_req, res) => {
+  res.json({ ok: true, service: "iron-student-portal-api", message: "API is running. Use /api/health." });
+});
+
 app.get("/api/health", (_req, res) => {
-  res.json({ ok: true, service: "iron-student-portal-api", mode: env.NODE_ENV });
+  res.json({ ok: true, service: "iron-student-portal-api", mode: env.NODE_ENV, allowedOrigins: env.CLIENT_ORIGINS });
 });
 
 app.use("/api/auth", authRoutes);
